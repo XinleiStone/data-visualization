@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>决策树</title>
+    <link rel="stylesheet" href="../libs/bootstrap/bootstrap.css"/>
+    <link rel="stylesheet" href="../src/styles/decision-tree.css">
+    <link rel="stylesheet" href="../libs/perfect-scrollbar.css"/>
+
+    <script src="../libs/jquery-1.10.2.min.js"></script>
+    <script src="../libs/d3-3.5.3.min.js"></script>
+    <script src="../libs/dagre-d3.js"></script>
+    <script src="../libs/tipsy.js"></script>
+    <script src="../libs/SVG2Bitmap.min.js"></script>
+    <script src="../libs/bootstrap/bootstrap.min.js"></script>
+    <script src="../libs/jquery.mousewheel.js"></script>
+    <script src="../libs/raphael.js"></script>
+    <script src="../libs/perfect-scrollbar.js"></script>
+    <script src="../src/scripts/data.js"></script>
+    <script src="../src/scripts/options.js"></script>
+    <script src="../src/scripts/decision-tree.js"></script>
+</head>
+<body>
+<h2 class="col-md-offset-1">决策树</h2>
+<hr>
+
+<div class="container">
+    <div class="com-float-left">
+        <div class="text-left text-success">组件视图：</div>
+        <div id="containerId"></div>
+    </div>
+    <div class="com-float-left com-ctl">
+        <div class="text-left text-success">参数设置：</div>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            基础设置：
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">容器宽度：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number" max="950"
+                                                                 id="numberContainerWidth"
+                                                                 oninput="ctl.changeContainerWidth(this, this.value);"
+                                                                 min="0" value="750"/></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">容器高度：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number" max="750"
+                                                                 id="numberContainerHeight"
+                                                                 oninput="ctl.changeContainerHeight(this, this.value);"
+                                                                 min="0" value="550"/></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">背景颜色：</p></div>
+                                    <div class="col-sm-7">
+                                        <input class="color-choose" onchange="ctl.changeColorBack(this.value);"
+                                               type="color" value="#ffffff" id="colorBack">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">横向间隔：</p></div>
+                                    <div class="col-sm-7"><input id="rangeNodeInterval"
+                                                                 oninput="ctl.changeNodeInterval(this, this.value);"
+                                                                 class="form-control input-xs" type="number" max="300"
+                                                                 value="30"></div>
+
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">纵向间隔：</p></div>
+                                    <div class="col-sm-7"><input id="rangeRankInterval"
+                                                                 oninput="ctl.changeRankInterval(this, this.value)"
+                                                                 class="form-control input-xs" type="number" max="300"
+                                                                 value="40"></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">父节点颜色：</p></div>
+                                    <div class="col-sm-7"><input class="color-choose"
+                                                                 onchange="ctl.changeColorNotLeaf(this.value);"
+                                                                 value="#ff425d" type="color"
+                                                                 id="colorNotLeaf">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">叶节点颜色：</p></div>
+                                    <div class="col-sm-7"><input class="color-choose"
+                                                                 onchange="ctl.changeColorLeaf(this.value);"
+                                                                 value="#5ca6ba" type="color"
+                                                                 id="colorLeaf"></div>
+                                </div>
+                            </li>
+                            <!--<li class="list-group-item">-->
+                                <div class="row" style="padding-left: 15px; line-height: 2.2;">
+                                    <div class="col-sm-10" style="color: #3c763d;"><p class="form-control-static">节点可点击、拖拽；<br>点击节点显示预测路径；
+                                        <br>选中节点后可点击收起、展开展示。
+                                        </p></div>
+                                    <!--<div class="col-sm-6 col-sm-offset-4">点击节点显示预测路径；选中节点点击收起、展开实现相应效果；</div>-->
+                                </div>
+                           <!-- </li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            标题：
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">标题文本：</p></div>
+                                    <div class="col-sm-7"><input type="text" class="form-control input-xs"
+                                                                 id="textHeadline" maxlength="32"
+                                                                 oninput="ctl.changeHeadline(this, this.value);"/></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">文本颜色：</p></div>
+                                    <div class="col-sm-7"><input class="color-choose"
+                                                                 onchange="ctl.changeColorText(this.value);"
+                                                                 type="color" id="colorText"></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">文本大小：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number" size="2"
+                                                                 max="30"
+                                                                 id="numberTextSize"
+                                                                 oninput="ctl.changeTextSize(this, this.value);"
+                                                                 value="16"/></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">是否加粗：</p></div>
+                                    <div class="col-sm-7">
+                                        <label class="radio-inline">
+                                            <input type="radio" onchange="ctl.changeTextBold();" name="bold"
+                                                   value="yes"> 是
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" onchange="ctl.changeTextBold();" name="bold" checked
+                                                   value="no"> 否
+                                        </label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">左边距：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number"
+                                                                 id="numberTextLeft"
+                                                                 oninput="ctl.changeTextLeft(this, this.value);"
+                                                                 value="10"/>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">上边距：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number"
+                                                                 id="numberTextTop"
+                                                                 oninput="ctl.changeTextTop(this, this.value);"
+                                                                 value="25"/></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="decision-tree.html#collapseThree">
+                            副标题：
+                        </a>
+                    </h4>
+                </div>
+
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">副标文本：</p></div>
+                                    <div class="col-sm-7"><input type="text" class="form-control input-xs"
+                                                                 id="textSubHeadline" maxlength="32"
+                                                                 oninput="ctl.changeSubHeadline(this, this.value);"/>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">文本颜色：</p></div>
+                                    <div class="col-sm-7"><input class="color-choose"
+                                                                 onchange="ctl.changeColorSubText(this.value);"
+                                                                 type="color" id="colorSubText">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">文本大小：</p></div>
+                                    <div class="col-sm-7"><input class="form-control" type="number" size="2" max="30"
+                                                                 id="numberSubTextSize"
+                                                                 oninput="ctl.changeSubTextSize(this, this.value);"
+                                                                 value="12"/></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">是否加粗：</p></div>
+                                    <div class="col-sm-7">
+                                        <label class="radio-inline">
+                                            <input type="radio" onchange="ctl.changeSubTextBold()" name="subBold"
+                                                   value="yes"> 是
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" onchange="ctl.changeSubTextBold();" name="subBold"
+                                                   checked value="no"> 否
+                                        </label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">左边距：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number"
+                                                                 id="numberSubTextLeft"
+                                                                 oninput="ctl.changeSubTextLeft(this, this.value);"
+                                                                 value="10"/>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4"><p class="form-control-static">上边距：</p></div>
+                                    <div class="col-sm-7"><input class="form-control input-xs" type="number"
+                                                                 id="numberSubTextTop"
+                                                                 oninput="ctl.changeSubTextTop(this, this.value);"
+                                                                 value="50"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>-->
+            <!--<div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="decision-tree.html#collapseFour">
+                            节点：
+                        </a>
+                    </h4>
+                </div>
+
+                <div id="collapseFour" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-6"><p class="form-control-static">父节点颜色：</p></div>
+                                    <div class="col-sm-6"><input class="color-choose"
+                                                                 onchange="ctl.changeColorNotLeaf(this.value);"
+                                                                 value="#FF8C00" type="color"
+                                                                 id="colorNotLeaf">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-6"><p class="form-control-static">叶节点颜色：</p></div>
+                                    <div class="col-sm-6"><input class="color-choose"
+                                                                 onchange="ctl.changeColorLeaf(this.value);"
+                                                                 value="#FF3030" type="color"
+                                                                 id="colorLeaf"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>
+<script src="../src/scripts/ctl.js"></script>
+</body>
+</html>
+
+
