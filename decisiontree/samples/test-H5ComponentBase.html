@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+
+        <title>慕课网2015课程学习情况</title>
+
+        <link rel="stylesheet" type="text/css" href="../src/styles/H5ComponentBase.css">
+        <link rel="stylesheet" type="text/css" href="../src/styles/decision-tree.css">
+        <style type="text/css">
+            body{
+                margin: 0;
+                padding: 0;
+                background-color: #000;
+                font-size: 12px;
+            }
+
+            .iphone{
+                width: 340px;
+                height: 540px;
+                background-color: #fff;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin: -270px 0 0 -170px;
+            }
+        </style>
+
+        <script type="text/javascript" src="../libs/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../src/scripts/H5ComponentBase.js"></script>
+        <script type="text/javascript" src="../src/scripts/decision-tree.js"></script>
+        <script src="../libs/d3-3.5.3.min.js"></script>
+        <script src="../libs/dagre-d3.js"></script>
+        <script src="../libs/tipsy.js"></script>
+        <script src="../libs/SVG2Bitmap.min.js"></script>
+        <script src="../libs/bootstrap/bootstrap.min.js"></script>
+        <script src="../libs/jquery.mousewheel.js"></script>
+        <script src="../libs/raphael.js"></script>
+        <script src="../libs/perfect-scrollbar.js"></script>
+        <script src="../src/scripts/data.js"></script>
+    </head>
+
+    <body>
+        <!-- 用于开发测试 H5ComponentBase 对象（基本的图文组件） -->
+        <div class="iphone">
+
+        </div>
+
+        <script type="text/javascript">
+            var cfg = {
+                type: 'base',
+                text: '',
+                width: 340,
+                height: 540,
+                center: true,
+                css: {
+                    bottom: -50,
+                    opacity: 0
+                },
+                animateIn: {
+                    bottom: 0,
+                    opacity: 1
+                },
+                animateOut: {
+                    bottom: -50,
+                    opacity: 0
+                }
+            };
+
+            var h5 = new H5ComponentBase('myName', cfg);
+            h5.appendTo('.iphone');
+
+            var option = {
+                containerId: h5.attr('id'),
+                width: cfg.width,
+                height: cfg.height
+            };
+            decisionTree.createGraph(treesData.trees[0], option);
+
+        </script>
+
+    </body>
+
+</html>
