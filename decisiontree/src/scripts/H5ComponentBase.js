@@ -18,6 +18,14 @@ var H5ComponentBase = function(name, cfg) {
 		});
 	}
 
+	var option = {
+		containerId: id,
+		width: cfg.width,
+		height: cfg.height
+	};
+	console.log(id)
+	decisionTree.createGraph($component, treesData.trees[0], option);
+
 	$component.on("onLoad", function() {
 		//$(this).fadeIn();
 		$component.addClass(className + '_load').removeClass(className + '_leave');
@@ -34,12 +42,6 @@ var H5ComponentBase = function(name, cfg) {
 		});
 		
 		return false;
-	});
-
-	var leave = false;
-	$('body').click(function() {
-		leave = !leave;
-		$('.h5_component_base').trigger(leave ? 'onLoad': 'onLeave');
 	});
 
 	return $component;

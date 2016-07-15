@@ -4,7 +4,7 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
 
-        <title>慕课网2015课程学习情况</title>
+        <title>算法可视化</title>
 
         <link rel="stylesheet" type="text/css" href="../src/styles/H5ComponentBase.css">
         <link rel="stylesheet" type="text/css" href="../src/styles/decision-tree.css">
@@ -71,12 +71,14 @@
             var h5 = new H5ComponentBase('myName', cfg);
             h5.appendTo('.iphone');
 
-            var option = {
-                containerId: h5.attr('id'),
-                width: cfg.width,
-                height: cfg.height
-            };
-            decisionTree.createGraph(treesData.trees[0], option);
+            
+            h5.css('opacity', 0);
+            $('.h5_component_base').trigger('onLoad');
+            var leave = true;
+            $('body').click(function() {
+                leave = !leave;
+                $('.h5_component_base').trigger(leave ? 'onLoad' : 'onLeave');
+            });
 
         </script>
 

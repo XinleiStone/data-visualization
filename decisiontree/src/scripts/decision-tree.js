@@ -37,7 +37,7 @@ var decisionTree = function () {
      *  options: render options object
      *
      * */
-    function createGraph(jsonData, options) {
+    function createGraph($container, jsonData, options) {
         var svg;                                     // svg to draw
         var gTree;                                   // the tree input graph
         var gPredictPath;                            // the path input graph
@@ -126,7 +126,7 @@ var decisionTree = function () {
 
         // when click on the node
         svg.selectAll("g.node").on("click", function (v) {
-            if (true == dragFlag) {
+            if (true === dragFlag) {
                 nodeNumber = gTree.node(v).value;
                 $("g.node rect").parent(".node").attr("class", "node node-normal");
                 $("g[id^=label_]").attr("class", "edgeLabel-visible");
@@ -155,7 +155,7 @@ var decisionTree = function () {
             function drawPredictPath(num) {
                 gTree.edges().forEach(function (e) {
                     if (e.w == num) {
-                        var lor = (0 == parseInt(e.w) % 2) ? gTree.node(e.v).left : gTree.node(e.v).right;  // label on path
+                        var lor = (0 === parseInt(e.w) % 2) ? gTree.node(e.v).left : gTree.node(e.v).right;  // label on path
                         var tempObj = {
                             key: gTree.node(e.w).key,
                             name: gTree.node(e.w).name,
@@ -224,11 +224,13 @@ var decisionTree = function () {
 
             $("#" + containerId).html("");
             // Set up an SVG tree group to translate the final graph tree
-            svg = d3.select("#" + containerId)
-                .append("svg")
+            svg = $container
+                .append("<svg id='svgcontainer'></svg>")
                 /*.attr("width", "400px")
                 .attr("height", "400px")*/
                 .attr("class", "svg-tree");
+
+            console.log($('#svgcontainer')[0])
 
             // scale smaller
             //svgGroupTree.attr("transform", "scale(" + 0.9 + ")");
@@ -261,7 +263,7 @@ var decisionTree = function () {
                 gTree.setNode(n.key, n);
                 if (n.children) {
                     for (var i = 0; i < n.children.length; i++) {
-                        var lor = (0 == n.children[i].value % 2) ? n.left : n.right;  // label on path
+                        var lor = (0 === n.children[i].value % 2) ? n.left : n.right;  // label on path
                         gTree.setEdge(n.key, n.children[i].value, {
                             label: lor,
                             lineInterpolate: "basis",
@@ -279,7 +281,7 @@ var decisionTree = function () {
             });
             gTree.edges().forEach(function (e) {
                 var edge = gTree.edge(e.v, e.w);
-                edge.customId = e.v + "-" + e.w
+                edge.customId = e.v + "-" + e.w;
             });
 
             nodeNumber = null;
@@ -305,7 +307,6 @@ var decisionTree = function () {
                 });
 
             bigWidth = gTree.graph().width;
-            console.log(bigWidth)
             graphHeight = gTree.graph().height;
 
             if ((graphHeight + 100) < height) {
@@ -355,7 +356,7 @@ var decisionTree = function () {
                 gTree.setNode(n.key, n);
                 if (n.children) {
                     for (var i = 0; i < n.children.length; i++) {
-                        var lor = (0 == n.children[i].value % 2) ? n.left : n.right;  // label on path
+                        var lor = (0 === n.children[i].value % 2) ? n.left : n.right;  // label on path
                         gTree.setEdge(n.key, n.children[i].value, {
                             label: lor,
                             lineInterpolate: "basis",
