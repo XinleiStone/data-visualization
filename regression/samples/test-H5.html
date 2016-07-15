@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+
+    <title>算法可视化</title>
+
+    <link rel="stylesheet" href="../libs/bootstrap.css"/>
+    <!-- 基本资源库 -->
+    <script src="../libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-fullPage/2.7.4/jquery.fullPage.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.2.1/echarts.common.js"></script>
+    <script src="../src/scripts/regression.js"></script>
+    <script src="../src/scripts/regressionData.js"></script>
+
+    <!-- H5对象资源&管理内容：页-组件 -->
+    <script type="text/javascript" src="../src/scripts/H5.js"></script>
+    <link rel="stylesheet" type="text/css" href="../src/styles/H5.css">
+
+    <script type="text/javascript" src="../src/scripts/H5ComponentBase.js"></script>
+    <script type="text/javascript" src="../src/scripts/RegressionComponent.js"></script>
+    <link rel="stylesheet" type="text/css" href="../src/styles/H5ComponentBase.css">
+    <link rel="stylesheet" type="text/css" href="../src/styles/H5ComponentRegression.css">
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- 测试内容组织功能，以及fullPage页面切换&组件切换 -->
+
+    <!-- 内容组织管理，有可能会加载若干个资源 -->
+
+    <script type="text/javascript">
+        $(function() {
+            var h5 = new H5();
+
+            h5.addPage('myName1', 'text1')
+                    .addComponent('myComment1', {
+                        type: 'base',
+                        text: 'component1-1',
+                        width: 380,
+                        height: 100,
+                        css: {
+                            backgroundColor: 'red',
+                            top: 200,
+                            opacity: 0
+                        },
+                        center: true,
+                        animateIn: {opacity: 1},
+                        animateOut: {opacity: 0}
+                    })
+                .addPage('myName2', 'text2')
+                    .addComponent('myComment2', {
+                        type: 'regression',
+                        text: 'component1-2',
+                        width: 600,
+                        height: 700,
+                        css: {
+                            backgroundColor: 'blue',
+                            top: 200,
+                            opacity: 0
+                        },
+                        center: true,
+                        animateIn: {
+                            top: 50,
+                            opacity: 1
+                        },
+                        animateOut: {
+                            top: 200,
+                            opacity: 0
+                        }
+                    })
+                .addPage('myName3', 'text3')
+                    .addComponent('myComment3', {
+                        text: 'component1-3',
+                        width: 400,
+                        height: 100,
+                        css: {
+                            backgroundColor: 'yellow',
+                            top: 200,
+                            opacity: 0
+                        },
+                        center: true,
+                        animateIn: {opacity: 1},
+                        animateOut: {opacity: 0}
+                    })
+                .loader();
+        });
+    </script>
+</body>
+
+</html>

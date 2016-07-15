@@ -1,0 +1,14 @@
+/* H5对象的全局样式 */
+.h5 {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.h5_page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #c3c3c3;
+    background-size: 100%;
+}

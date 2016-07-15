@@ -1,0 +1,7 @@
+/* regression图文组件样式 */
+.h5_component_regression {
+	background-color: #fff;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	position: absolute;
+}
