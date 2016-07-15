@@ -56,7 +56,7 @@ var H5 = function() {
 
 		this.page[0].find('.h5_component').trigger('onLoad');
 	};
-	this.loader = typeof H5_loading == "function" ? H5_loading : this.loader; 
+	//this.loader = typeof H5_loading == "function" ? H5_loading : this.loader; 
 
 	return this;
 };

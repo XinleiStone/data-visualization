@@ -48,7 +48,6 @@
     <script type="text/javascript">
         $(function() {
             var h5 = new H5();
-            h5.loader();
 
             h5.addPage('myName1', 'text1')
                     .addComponent('myComment1', {
@@ -100,7 +99,7 @@
                         animateIn: {opacity: 1},
                         animateOut: {opacity: 0}
                     })
-                //.loader();
+                .loader();
         });
     </script>
 </body>
